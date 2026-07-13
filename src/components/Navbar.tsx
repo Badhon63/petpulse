@@ -39,25 +39,16 @@ export default function Navbar() {
             {session ? (
               <>
                 <Link
-                  href="/items/manage"
+                  href={
+                    session?.user?.role === "admin"
+                      ? "/dashboard/admin"
+                      : "/dashboard/user"
+                  }
                   className="hover:text-amber-600 transition"
                 >
-                  My Products
+                  Dashboard
                 </Link>
 
-                <Link
-                  href="/orders/mine"
-                  className="hover:text-amber-600 transition"
-                >
-                  My Orders
-                </Link>
-
-                <Link
-                  href="/orders/received"
-                  className="hover:text-amber-600 transition"
-                >
-                  Manage Orders
-                </Link>
                 <Link
                   href="/profile"
                   className="hover:text-amber-600 transition"

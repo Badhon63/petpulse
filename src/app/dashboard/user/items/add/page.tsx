@@ -5,12 +5,10 @@ import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { createProduct } from "@/lib/actions";
 import { Slide, toast } from "react-toastify";
-import Spinner from "@/components/Spinner";
-import Link from "next/link";
 
 export default function AddItemPage() {
   const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session } = authClient.useSession();
 
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
@@ -69,38 +67,10 @@ export default function AddItemPage() {
     }
   };
 
-  if (isPending) {
-    return <Spinner />;
-  }
-
-  if (!session) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-12 grow">
-        <div className="bg-white border border-gray-100 rounded-3xl p-10 shadow-sm text-center">
-          <div className="text-4xl mb-3">🔒</div>
-          <h1 className="text-xl font-bold text-gray-950 tracking-tight">
-            Access Denied
-          </h1>
-          <p className="text-gray-400 text-xs mt-2 mb-6">
-            You need to be logged in to add items.
-          </p>
-          <Link
-            href="/login"
-            className="inline-block bg-amber-500 text-white px-5 py-2 rounded-xl hover:bg-amber-600 shadow-sm transition font-bold text-sm"
-          >
-            Go to Login
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
+    <div className=" mx-auto p-4">
       <div className="bg-white border border-gray-100 rounded-3xl shadow-sm p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Add Product 📦
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Add Product</h1>
         <p className="text-gray-500 mb-8">
           Fill in the details below to list your product.
         </p>

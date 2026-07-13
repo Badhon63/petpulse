@@ -137,7 +137,9 @@ const Profile = () => {
         <div className="flex items-center justify-center gap-1.5 text-gray-500 text-xs mt-1">
           {user.email}
           {user.emailVerified && (
-            <span className="text-green-600 font-bold">✓ Verified</span>
+            <span className="text-green-600 font-medium text-xs bg-green-100 px-2 py-0.5 rounded-full">
+              Verified
+            </span>
           )}
         </div>
 

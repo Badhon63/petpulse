@@ -2,11 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
 import { deleteProduct } from "@/lib/actions";
 import { Slide, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import Spinner from "@/components/Spinner";
 
 interface PetItem {
   _id: string;
@@ -17,7 +15,6 @@ interface PetItem {
 }
 
 export default function ManageItems({ items }: { items: PetItem[] }) {
-  const { data: session, isPending } = authClient.useSession();
   const [pendingDelete, setPendingDelete] = useState<PetItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
@@ -59,34 +56,8 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
     }
   };
 
-  if (isPending) {
-    return <Spinner />;
-  }
-
-  if (!session) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-12 grow">
-        <div className="bg-white border border-gray-100 rounded-3xl p-10 shadow-sm text-center">
-          <div className="text-4xl mb-3">🔒</div>
-          <h1 className="text-xl font-bold text-gray-950 tracking-tight">
-            Access Denied
-          </h1>
-          <p className="text-gray-400 text-xs mt-2 mb-6">
-            You need to be logged in to manage your listings.
-          </p>
-          <Link
-            href="/login"
-            className="inline-block bg-amber-500 text-white px-5 py-2 rounded-xl hover:bg-amber-600 shadow-sm transition font-bold text-sm"
-          >
-            Go to Login
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 grow text-gray-800">
+    <div className="max-w-4xl mx-auto p-4 grow text-gray-800">
       <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
         <div className="mb-6 flex justify-between items-center">
           <div>
@@ -99,7 +70,7 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
           </div>
 
           <Link
-            href="/items/add"
+            href="/dashboard/user/items/add"
             className="bg-amber-500 text-white px-4 py-2 rounded-xl hover:bg-amber-600 shadow-sm transition"
           >
             Add Product +

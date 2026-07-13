@@ -39,7 +39,7 @@ export default function LoginPage() {
       setPassword("123456789");
     } else {
       setEmail("admin@example.com");
-      setPassword("admin123456");
+      setPassword("12345678");
     }
   };
 
@@ -55,7 +55,7 @@ export default function LoginPage() {
 
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-100 font-medium">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -88,7 +88,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl hover:bg-amber-600 transition"
+            className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl hover:bg-amber-600 transition cursor-pointer"
           >
             Sign In
           </button>
@@ -102,13 +102,13 @@ export default function LoginPage() {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => handleDemoLogin("user")}
-              className="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 text-xs font-semibold py-2 px-3 rounded-lg transition"
+              className="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 text-xs font-semibold py-2 px-3 rounded-lg transition cursor-pointer"
             >
               Demo User
             </button>
             <button
               onClick={() => handleDemoLogin("admin")}
-              className="bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-900 text-xs font-semibold py-2 px-3 rounded-lg transition"
+              className="bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-900 text-xs font-semibold py-2 px-3 rounded-lg transition cursor-pointer"
             >
               Demo Admin
             </button>

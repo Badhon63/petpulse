@@ -164,7 +164,7 @@ export default function ProductDetails({ pet }: { pet: PetItem }) {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
           <div
-            className={`${pet.category !== "Dog" && pet.category !== "Cat" ? "hidden" : ""} `}
+            className={`${pet.category !== "Dogs" && pet.category !== "Cats" ? "hidden" : ""} `}
           >
             <span className="text-gray-500 block">Health Status</span>
             <span className="font-semibold text-gray-800">
@@ -172,7 +172,7 @@ export default function ProductDetails({ pet }: { pet: PetItem }) {
             </span>
           </div>
           <div
-            className={`${pet.category !== "Dog" && pet.category !== "Cat" ? "hidden" : ""} `}
+            className={`${pet.category !== "Dogs" && pet.category !== "Cats" ? "hidden" : ""} `}
           >
             <span className="text-gray-500 block">Vaccination</span>
             <span className="font-semibold text-gray-800">Up to Date</span>
