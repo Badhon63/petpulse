@@ -1,8 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import { deleteProduct } from "@/lib/actions";
+import { Slide, toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface PetItem {
   _id: string;
@@ -14,15 +17,34 @@ interface PetItem {
 
 export default function ManageItems({ items }: { items: PetItem[] }) {
   const { data: session, isPending } = authClient.useSession();
+  const [pendingDelete, setPendingDelete] = useState<PetItem | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
 
-  const handleDelete = (id: string, title: string) => {
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${title}"?`,
-    );
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
 
-    if (confirmDelete) {
-      console.log("Delete item:", id);
-      alert("Item deleted successfully!");
+    setIsDeleting(true);
+    try {
+      await deleteProduct(pendingDelete._id);
+      toast.success(`"${pendingDelete.title}" deleted successfully!`, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Slide,
+      });
+      router.refresh();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      toast.error("Failed to delete item. Please try again.");
+    } finally {
+      setIsDeleting(false);
+      setPendingDelete(null);
     }
   };
 
@@ -113,10 +135,16 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
                       </span>
                     </td>
 
-                    <td className="p-4 text-center">
+                    <td className="p-4 text-center space-x-2">
+                      <Link
+                        href={`/explore/${pet._id}`}
+                        className="bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white px-3 py-1.5 rounded-lg font-bold transition cursor-pointer"
+                      >
+                        View
+                      </Link>
                       <button
-                        onClick={() => handleDelete(pet._id, pet.title)}
-                        className="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg font-bold transition"
+                        onClick={() => setPendingDelete(pet)}
+                        className="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg font-bold transition cursor-pointer"
                       >
                         Delete
                       </button>
@@ -134,6 +162,37 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
           </div>
         )}
       </div>
+
+      {pendingDelete && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-3xl p-6 shadow-xl max-w-sm w-full text-center">
+            <div className="text-4xl mb-3">⚠️</div>
+            <h2 className="text-lg font-bold text-gray-950">
+              Delete &quot;{pendingDelete.title}&quot;?
+            </h2>
+            <p className="text-gray-400 text-xs mt-2 mb-6">
+              This action cannot be undone.
+            </p>
+
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => setPendingDelete(null)}
+                disabled={isDeleting}
+                className="px-4 py-2 rounded-xl font-bold text-sm bg-gray-50 text-gray-600 hover:bg-gray-100 transition disabled:opacity-50 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={isDeleting}
+                className="px-4 py-2 rounded-xl font-bold text-sm bg-red-600 text-white hover:bg-red-700 transition disabled:opacity-50 cursor-pointer"
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

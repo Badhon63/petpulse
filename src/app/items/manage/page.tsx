@@ -1,7 +1,15 @@
+import { auth } from "@/lib/auth";
 import ManageItems from "./Manage";
-import { getProducts } from "@/lib/fetch";
+import { getMyProducts } from "@/lib/fetch";
+import { headers } from "next/headers";
 
 export default async function ManageItemsPage() {
-  const items = await getProducts();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const user = session?.user;
+
+  const items = user?.email ? await getMyProducts(user.email) : [];
+
   return <ManageItems items={items} />;
 }

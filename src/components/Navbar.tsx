@@ -33,7 +33,6 @@ export default function Navbar() {
             <Link href="/explore" className="hover:text-amber-600 transition">
               Explore
             </Link>
-            {/* আপনার নিজস্ব অরেঞ্জ/অ্যাম্বার স্টাইল ঠিক রেখে About লিংক যুক্ত করা হলো */}
             <Link href="/about" className="hover:text-amber-600 transition">
               About
             </Link>{" "}
@@ -44,6 +43,26 @@ export default function Navbar() {
                   className="hover:text-amber-600 transition"
                 >
                   My Products
+                </Link>
+
+                <Link
+                  href="/orders/mine"
+                  className="hover:text-amber-600 transition"
+                >
+                  My Orders
+                </Link>
+
+                <Link
+                  href="/orders/received"
+                  className="hover:text-amber-600 transition"
+                >
+                  Manage Orders
+                </Link>
+                <Link
+                  href="/profile"
+                  className="hover:text-amber-600 transition"
+                >
+                  Profile
                 </Link>
 
                 <div className="flex items-center gap-3">
