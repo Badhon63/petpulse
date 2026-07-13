@@ -69,6 +69,7 @@ export default function ProductDetails({ pet }: { pet: PetItem }) {
             className="w-full h-full object-cover"
             width={600}
             height={400}
+            loading="eager"
           />
         </div>
 
@@ -122,7 +123,7 @@ export default function ProductDetails({ pet }: { pet: PetItem }) {
               onClick={() => router.push(`/checkout/${pet._id}`)}
               className="w-full bg-gray-900 text-white font-bold py-3.5 rounded-xl hover:bg-amber-600 transition mt-6"
             >
-              Adopt / Purchase Now
+              Purchase Now
             </button>
           )}
         </div>

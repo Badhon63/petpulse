@@ -19,6 +19,7 @@ export default function PetCard({ pet }: PetCardProps) {
           className="w-full h-full object-cover"
           width={300}
           height={200}
+          loading="eager"
         />
         <span className="absolute top-3 right-3 bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">
           {pet.category}
@@ -35,7 +36,7 @@ export default function PetCard({ pet }: PetCardProps) {
             📍 {pet.location}
           </p>
           <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-            {pet.shortDescription}
+            {pet.fullDescription}
           </p>
         </div>
 

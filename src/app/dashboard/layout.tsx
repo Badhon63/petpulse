@@ -8,7 +8,7 @@ import { authClient } from "@/lib/auth-client";
 const userNavItems = [
   { label: "Dashboard", href: "/dashboard/user" },
   { label: "My Products", href: "/dashboard/user/items/manage" },
-  { label: "My Orders", href: "/dashboard/user/orders/mine" },
+  { label: "Bought Products", href: "/dashboard/user/orders/mine" },
   { label: "Manage Orders", href: "/dashboard/user/orders/received" },
   { label: "Payments", href: "/dashboard/user/payments" },
 ];

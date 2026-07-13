@@ -12,6 +12,7 @@ interface Order {
   buyerEmail: string;
   buyerName: string;
   status: string;
+  paid: boolean;
   createdAt: string;
 }
 
@@ -70,6 +71,7 @@ export default function MyOrders() {
                   <th className="p-4">Product</th>
                   <th className="p-4">Price</th>
                   <th className="p-4">Order Date</th>
+                  <th className="p-4">Payment</th>
                   <th className="p-4">Status</th>
                 </tr>
               </thead>
@@ -87,6 +89,17 @@ export default function MyOrders() {
                     </td>
                     <td className="p-4 text-gray-500">
                       {formatDate(order.createdAt)}
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                          order.paid
+                            ? "bg-green-50 text-green-700"
+                            : "bg-red-50 text-red-600"
+                        }`}
+                      >
+                        {order.paid ? "Paid" : "Unpaid"}
+                      </span>
                     </td>
                     <td className="p-4">
                       <span

@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
-import { createOrder } from "@/lib/actions";
-import { Slide, toast } from "react-toastify";
+import { toast, Slide } from "react-toastify";
 import { PetItem } from "@/types";
+import Spinner from "@/components/Spinner";
 
 export default function CheckoutClient({ product }: { product: PetItem }) {
   const { data: session, isPending } = authClient.useSession();
@@ -21,25 +21,27 @@ export default function CheckoutClient({ product }: { product: PetItem }) {
 
     setIsPlacing(true);
     try {
-      await createOrder({
-        productId: product._id,
-        buyerEmail: session.user.email,
-        buyerName: session.user.name,
+      const res = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: product._id,
+          title: product.title,
+          price: product.price,
+          buyerEmail: session.user.email,
+        }),
       });
-      toast.success("Order placed successfully!", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Slide,
-      });
-      router.push("/explore");
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to start checkout");
+      }
+
+      window.location.href = data.url;
     } catch (error) {
-      toast.error("Failed to place order. Please try again.", {
+      console.error("Error starting checkout:", error);
+      toast.error("Failed to start checkout. Please try again.", {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: true,
@@ -50,18 +52,12 @@ export default function CheckoutClient({ product }: { product: PetItem }) {
         theme: "light",
         transition: Slide,
       });
-      console.error("Error placing order:", error);
-    } finally {
       setIsPlacing(false);
     }
   };
 
   if (isPending) {
-    return (
-      <div className="max-w-md mx-auto px-4 py-20 text-center text-xs text-gray-500">
-        Checking your session...
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
@@ -113,7 +109,7 @@ export default function CheckoutClient({ product }: { product: PetItem }) {
         disabled={isPlacing}
         className="w-full bg-gray-900 text-white font-bold py-3.5 rounded-xl hover:bg-amber-600 transition disabled:opacity-50 cursor-pointer"
       >
-        {isPlacing ? "Placing Order..." : `Confirm & Pay $${product.price}`}
+        {isPlacing ? "Redirecting to Stripe..." : `Checkout`}
       </button>
     </div>
   );
