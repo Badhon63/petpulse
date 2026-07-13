@@ -6,6 +6,7 @@ import { authClient } from "@/lib/auth-client";
 import { getOrders } from "@/lib/fetch";
 import { updateOrderStatus } from "@/lib/actions";
 import { toast, Slide } from "react-toastify";
+import Spinner from "@/components/Spinner";
 
 interface Order {
   _id: string;
@@ -89,11 +90,7 @@ export default function MyOrders() {
   };
 
   if (isPending) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-12 grow text-gray-800 text-center text-xs">
-        Checking your session...
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!session) {

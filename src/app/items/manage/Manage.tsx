@@ -6,6 +6,7 @@ import { authClient } from "@/lib/auth-client";
 import { deleteProduct } from "@/lib/actions";
 import { Slide, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/Spinner";
 
 interface PetItem {
   _id: string;
@@ -41,7 +42,17 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
       router.refresh();
     } catch (error) {
       console.error("Error deleting item:", error);
-      toast.error("Failed to delete item. Please try again.");
+      toast.error("Failed to delete item. Please try again.", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Slide,
+      });
     } finally {
       setIsDeleting(false);
       setPendingDelete(null);
@@ -49,11 +60,7 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
   };
 
   if (isPending) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-12 grow text-gray-800 text-center text-xs">
-        Checking your session...
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!session) {

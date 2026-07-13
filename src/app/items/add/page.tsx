@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { createProduct } from "@/lib/actions";
 import { Slide, toast } from "react-toastify";
+import Spinner from "@/components/Spinner";
+import Link from "next/link";
 
 export default function AddItemPage() {
   const router = useRouter();
@@ -12,19 +14,14 @@ export default function AddItemPage() {
 
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
-  const [shortDesc, setShortDesc] = useState("");
+  const [fullDescription, setFullDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [date, setDate] = useState("");
   const [rating, setRating] = useState("");
   const [location, setLocation] = useState("");
   const [error, setError] = useState("");
-  const [category, setCategory] = useState("");
-
-  useEffect(() => {
-    if (!isPending && !session) {
-      router.push("/login");
-    }
-  }, [session, isPending, router]);
+  const [category, setCategory] = useState<
+    "" | "Cats" | "Dogs" | "Food" | "Accessory"
+  >("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,9 +30,8 @@ export default function AddItemPage() {
     if (
       !image ||
       !title ||
-      !shortDesc ||
+      !fullDescription ||
       !price ||
-      !date ||
       !rating ||
       !location ||
       !category
@@ -47,14 +43,13 @@ export default function AddItemPage() {
     const newProduct = {
       image,
       title,
-      shortDesc,
+      fullDescription,
       price: Number(price),
-      date,
       rating: Number(rating),
       location,
       category,
       status: "pending",
-      createdBy: session?.user.email,
+      createdBy: session?.user.email ?? "",
     };
 
     const result = await createProduct(newProduct);
@@ -75,9 +70,27 @@ export default function AddItemPage() {
   };
 
   if (isPending) {
+    return <Spinner />;
+  }
+
+  if (!session) {
     return (
-      <div className="flex justify-center items-center h-[60vh]">
-        Loading...
+      <div className="max-w-4xl mx-auto px-4 py-12 grow">
+        <div className="bg-white border border-gray-100 rounded-3xl p-10 shadow-sm text-center">
+          <div className="text-4xl mb-3">🔒</div>
+          <h1 className="text-xl font-bold text-gray-950 tracking-tight">
+            Access Denied
+          </h1>
+          <p className="text-gray-400 text-xs mt-2 mb-6">
+            You need to be logged in to add items.
+          </p>
+          <Link
+            href="/login"
+            className="inline-block bg-amber-500 text-white px-5 py-2 rounded-xl hover:bg-amber-600 shadow-sm transition font-bold text-sm"
+          >
+            Go to Login
+          </Link>
+        </div>
       </div>
     );
   }
@@ -111,7 +124,6 @@ export default function AddItemPage() {
               className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-amber-500"
             />
           </div>
-
           <div>
             <label className="block mb-2 font-semibold text-gray-700">
               Product Title
@@ -124,20 +136,18 @@ export default function AddItemPage() {
               className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-amber-500"
             />
           </div>
-
           <div>
             <label className="block mb-2 font-semibold text-gray-700">
               Short Description
             </label>
             <textarea
               rows={4}
-              value={shortDesc}
-              onChange={(e) => setShortDesc(e.target.value)}
-              placeholder="Write a short description..."
+              value={fullDescription}
+              onChange={(e) => setFullDescription(e.target.value)}
+              placeholder="Write a full description..."
               className="w-full border border-gray-300 rounded-xl px-4 py-3 resize-none focus:outline-none focus:border-amber-500"
             />
           </div>
-
           <div className="grid md:grid-cols-2 gap-5">
             <div>
               <label className="block mb-2 font-semibold text-gray-700">
@@ -145,7 +155,16 @@ export default function AddItemPage() {
               </label>
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) =>
+                  setCategory(
+                    e.target.value as
+                      | ""
+                      | "Cats"
+                      | "Dogs"
+                      | "Food"
+                      | "Accessory",
+                  )
+                }
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-amber-500"
               >
                 <option value="">Select Category</option>
@@ -155,7 +174,6 @@ export default function AddItemPage() {
                 <option value="Accessories">Accessories</option>
               </select>
             </div>
-
             <div>
               <label className="block mb-2 font-semibold text-gray-700">
                 Price ($)
@@ -165,18 +183,6 @@ export default function AddItemPage() {
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="49.99"
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-amber-500"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-2 font-semibold text-gray-700">
-                Date
-              </label>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-amber-500"
               />
             </div>
@@ -196,7 +202,6 @@ export default function AddItemPage() {
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-amber-500"
               />
             </div>
-
             <div>
               <label className="block mb-2 font-semibold text-gray-700">
                 Location
@@ -210,7 +215,11 @@ export default function AddItemPage() {
               />
             </div>
           </div>
-
+          {error && (
+            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-600">
+              {error}
+            </div>
+          )}
           <button
             type="submit"
             className="w-full bg-gray-900 text-white py-3 rounded-xl font-semibold hover:bg-amber-600 transition"

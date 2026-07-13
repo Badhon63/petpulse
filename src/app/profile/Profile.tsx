@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { toast, Slide } from "react-toastify";
+import Spinner from "@/components/Spinner";
 
 const Profile = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -83,11 +84,7 @@ const Profile = () => {
   };
 
   if (isPending) {
-    return (
-      <div className="max-w-md mx-auto px-4 py-12 grow text-center text-xs text-gray-500">
-        Checking your session...
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!session) {
