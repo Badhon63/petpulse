@@ -121,7 +121,7 @@ export default function ProductDetails({ pet }: { pet: PetItem }) {
           ) : (
             <button
               onClick={() => router.push(`/checkout/${pet._id}`)}
-              className="w-full bg-gray-900 text-white font-bold py-3.5 rounded-xl hover:bg-amber-600 transition mt-6"
+              className="w-full bg-gray-900 text-white font-bold py-3.5 rounded-xl hover:bg-amber-600 transition mt-6 cursor-pointer"
             >
               Purchase Now
             </button>

@@ -91,3 +91,47 @@ export const updateOrderStatus = async (id: string, status: string) => {
     throw error;
   }
 };
+
+export const banUser = async (id: string, banned: boolean) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/ban`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ banned }),
+      },
+    );
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to update user");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error updating user ban status:", error);
+    throw error;
+  }
+};
+
+export const deleteUser = async (id: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`,
+      {
+        method: "DELETE",
+      },
+    );
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to delete user");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error;
+  }
+};

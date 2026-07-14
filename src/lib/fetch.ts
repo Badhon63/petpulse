@@ -74,3 +74,31 @@ export const getReceivedOrders = async (sellerEmail: string) => {
 
   return await res.json();
 };
+
+export const getOrdersAsBuyer = async (buyerEmail: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerEmail=${encodeURIComponent(buyerEmail)}`,
+  );
+  if (!res.ok) throw new Error("Failed to fetch orders");
+  return await res.json();
+};
+
+export const getOrdersAsSeller = async (sellerEmail: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?sellerEmail=${encodeURIComponent(sellerEmail)}`,
+  );
+  if (!res.ok) throw new Error("Failed to fetch orders");
+  return await res.json();
+};
+
+export const getUsers = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
+    method: "GET",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch users");
+  }
+
+  return await res.json();
+};
