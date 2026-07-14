@@ -104,7 +104,7 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
                     <td className="p-4">
                       <span
                         className={`px-2.5 py-1 rounded-full text-[10px] font-bold capitalize ${
-                          pet.status?.toLowerCase() === "approved"
+                          pet.status?.toLowerCase() === "active"
                             ? "bg-green-50 text-green-700"
                             : "bg-yellow-50 text-yellow-700"
                         }`}

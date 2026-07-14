@@ -135,3 +135,26 @@ export const deleteUser = async (id: string) => {
     throw error;
   }
 };
+
+export const updateProductStatus = async (id: string, status: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${id}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      },
+    );
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to update product status");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error updating product status:", error);
+    throw error;
+  }
+};
