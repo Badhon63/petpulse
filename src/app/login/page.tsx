@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import { Slide, toast } from "react-toastify";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -29,6 +30,17 @@ export default function LoginPage() {
       return;
     }
 
+    toast.success("Login successful!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Slide,
+    });
     router.push("/");
     router.refresh();
   };
@@ -47,7 +59,9 @@ export default function LoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-4 py-12">
       <div className="max-w-md w-full bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-900">Welcome Back 🐾</h2>
+          <h2 className="text-3xl font-bold text-gray-900 flex justify-center">
+            Welcome Back <span className="hidden sm:block">🐾</span>
+          </h2>
           <p className="text-gray-500 text-sm mt-1">
             Log in to manage your pets and orders
           </p>

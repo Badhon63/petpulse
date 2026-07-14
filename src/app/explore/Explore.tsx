@@ -77,8 +77,8 @@ export default function Explore({ products }: { products: PetItem[] }) {
             className="w-full bg-gray-50 border border-gray-200 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500"
           >
             <option value="All">All Categories</option>
-            <option value="Dog">Dogs</option>
-            <option value="Cat">Cats</option>
+            <option value="Dogs">Dogs</option>
+            <option value="Cats">Cats</option>
             <option value="Food">Pet Food</option>
             <option value="Accessory">Accessories</option>
           </select>

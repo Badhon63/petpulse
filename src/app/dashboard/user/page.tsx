@@ -155,7 +155,7 @@ export default function UserDashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {stats.map((stat) => (
           <Link
             key={stat.label}
@@ -216,7 +216,7 @@ export default function UserDashboardPage() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[240px] flex items-center justify-center text-gray-400 text-xs">
+            <div className="h-60 flex items-center justify-center text-gray-400 text-xs">
               No products listed yet.
             </div>
           )}

@@ -7,11 +7,14 @@ async function createOrderOnServer(
   buyerName: string,
 ) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId, buyerEmail, buyerName, paid: true }),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, buyerEmail, buyerName, paid: true }),
+      },
+    );
     return res.ok;
   } catch {
     return false;
@@ -46,14 +49,15 @@ export default async function Success({
 
     return (
       <div className="max-w-md mx-auto px-4 py-20 grow flex items-center justify-center">
-        <div className="bg-white border border-gray-100 rounded-3xl p-10 shadow-sm text-center w-full">
+        <div className="bg-white border border-gray-100 rounded-3xl p-4 sm:p-10 shadow-sm text-center w-full">
           <div className="text-4xl mb-3">🎉</div>
           <h1 className="text-xl font-bold text-gray-950 tracking-tight">
             Payment Successful!
           </h1>
           <p className="text-gray-400 text-xs mt-2 mb-6">
             We appreciate your business! A confirmation has been sent to{" "}
-            <span className="font-semibold text-gray-700">{customerEmail}</span>.
+            <span className="font-semibold text-gray-700">{customerEmail}</span>
+            .
           </p>
           <a
             href="/dashboard/user/orders/mine"

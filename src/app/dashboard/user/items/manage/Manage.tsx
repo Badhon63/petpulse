@@ -57,9 +57,9 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
   };
 
   return (
-    <div className="p-4 grow text-gray-800">
+    <div className="sm:p-4 grow text-gray-800">
       <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
-        <div className="mb-6 flex justify-between items-center">
+        <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:justify-between sm:items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-950 tracking-tight">
               Manage Your Listings
@@ -93,7 +93,9 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
               <tbody className="divide-y divide-gray-50 font-medium">
                 {items.map((pet) => (
                   <tr key={pet._id} className="hover:bg-gray-50/50 transition">
-                    <td className="p-4 font-bold text-gray-900">{pet.title}</td>
+                    <td className="p-4 font-bold text-gray-900 text-nowrap">
+                      {pet.title}
+                    </td>
 
                     <td className="p-4 text-gray-500">{pet.category}</td>
 
@@ -113,7 +115,7 @@ export default function ManageItems({ items }: { items: PetItem[] }) {
                       </span>
                     </td>
 
-                    <td className="p-4 text-center space-x-2">
+                    <td className="p-4 text-center space-x-2 flex justify-center">
                       <Link
                         href={`/explore/${pet._id}`}
                         className="bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white px-3 py-1.5 rounded-lg font-bold transition cursor-pointer"

@@ -61,9 +61,9 @@ export default function PaymentsPage() {
     .reduce((sum, o) => sum + o.price, 0);
 
   return (
-    <div className="text-gray-800 p-4">
+    <div className="text-gray-800 sm:p-4">
       <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
-        <div className="mb-6 flex justify-between items-center flex-wrap gap-3">
+        <div className="mb-6 flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-3">
           <div>
             <h1 className="text-2xl font-bold text-gray-950 tracking-tight">
               Payments
@@ -74,7 +74,7 @@ export default function PaymentsPage() {
                 : "Payments received for your listings"}
             </p>
           </div>
-          <div className="flex items-end flex-col-reverse gap-3">
+          <div className="flex items-end flex-wrap sm:flex-col-reverse gap-3">
             <div className="bg-gray-100 rounded-xl p-1 flex text-xs font-bold">
               <button
                 onClick={() => setView("buyer")}
@@ -115,7 +115,7 @@ export default function PaymentsPage() {
                   {view === "seller" && <th className="p-4">Buyer</th>}
                   <th className="p-4">Amount</th>
                   <th className="p-4">Date</th>
-                  <th className="p-4">Payment Status</th>
+                  <th className="p-4 text-nowrap">Payment Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50 font-medium">
@@ -124,23 +124,23 @@ export default function PaymentsPage() {
                     key={order._id}
                     className="hover:bg-gray-50/50 transition"
                   >
-                    <td className="p-4 font-bold text-gray-900">
+                    <td className="p-4 font-bold text-gray-900 text-nowrap">
                       {order.productTitle}
                     </td>
                     {view === "seller" && (
-                      <td className="p-4 text-gray-500">
+                      <td className="p-4 text-gray-500 text-nowrap">
                         {order.buyerName || order.buyerEmail}
                       </td>
                     )}
                     <td className="p-4 font-semibold text-amber-600">
                       ${order.price}
                     </td>
-                    <td className="p-4 text-gray-500">
+                    <td className="p-4 text-gray-500 text-nowrap">
                       {formatDate(order.createdAt)}
                     </td>
-                    <td className="p-4">
+                    <td className="p-4 text-center md:text-left">
                       <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold${
                           order.paid
                             ? "bg-green-50 text-green-700"
                             : "bg-red-50 text-red-600"

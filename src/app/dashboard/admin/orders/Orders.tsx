@@ -114,17 +114,17 @@ export default function Orders() {
                     key={order._id}
                     className="hover:bg-gray-50/50 transition"
                   >
-                    <td className="p-4 font-bold text-gray-900">
+                    <td className="p-4 font-bold text-gray-900 text-nowrap">
                       {order.productTitle}
                     </td>
-                    <td className="p-4 text-gray-500">
+                    <td className="p-4 text-gray-500 text-nowrap">
                       {order.buyerName || order.buyerEmail}
                     </td>
                     <td className="p-4 text-gray-500">{order.sellerEmail}</td>
                     <td className="p-4 font-semibold text-amber-600">
                       ${order.price}
                     </td>
-                    <td className="p-4 text-gray-500">
+                    <td className="p-4 text-gray-500 text-nowrap">
                       {formatDate(order.createdAt)}
                     </td>
                     <td className="p-4">
@@ -153,7 +153,7 @@ export default function Orders() {
                       <button
                         onClick={() => handleToggleStatus(order)}
                         disabled={actionId === order._id}
-                        className={`px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-50 cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-50 cursor-pointer text-nowrap ${
                           order.status === "delivered"
                             ? "bg-yellow-50 text-yellow-700 hover:bg-yellow-600 hover:text-white"
                             : "bg-green-50 text-green-700 hover:bg-green-600 hover:text-white"

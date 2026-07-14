@@ -2,12 +2,13 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import FeaturedListings from "@/components/FeaturedListings";
 
 export default function HomePage() {
   return (
     <div className="w-full bg-white text-gray-800">
       {/* ১. HERO SECTION (Height: 60-70vh as per requirements) */}
-      <section className="relative h-[65vh] w-full bg-linear-to-r from-amber-500 to-orange-600 flex items-center justify-center text-center px-4">
+      <section className="relative h-[75vh] sm:h-[65vh] w-full bg-linear-to-r from-amber-500 to-orange-600 flex items-center justify-center text-center px-4">
         <div className="max-w-3xl text-white">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-md">
             Find Your Perfect Furry Companion Today 🐾
@@ -32,7 +33,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* ২. CATEGORIES SECTION */}
       <section className="py-16 max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
@@ -48,12 +48,12 @@ export default function HomePage() {
               <div className="text-4xl mb-3">
                 {["🐶", "🐱", "🍖", "🧸"][idx]}
               </div>
-              <h3 className="font-bold text-lg text-amber-900">{cat}</h3>
+              <h3 className="text-amber-900">{cat}</h3>
             </div>
           ))}
         </div>
       </section>
-
+      <FeaturedListings />
       {/* ৩. STATISTICS SECTION */}
       <section className="py-12 bg-amber-50 w-full">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -83,7 +83,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* ৪. CORE ADVANTAGES / FEATURES SECTION */}
       <section className="py-16 max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
@@ -121,7 +120,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* ৫. TESTIMONIALS SECTION */}
       <section className="py-16 bg-gray-50 w-full">
         <div className="max-w-7xl mx-auto px-4">
@@ -157,7 +155,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* ৬. FAQ SECTION */}
       <section className="py-16 max-w-4xl mx-auto px-4">
         <div className="text-center mb-12">
@@ -189,7 +186,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* ৭. NEWSLETTER SECTION (Call to action) */}
       <section className="py-16 bg-linear-to-r from-orange-500 to-amber-600 text-white w-full text-center px-4">
         <div className="max-w-xl mx-auto">

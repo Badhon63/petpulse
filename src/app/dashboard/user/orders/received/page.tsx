@@ -89,7 +89,7 @@ export default function ReceivedOrders() {
   };
 
   return (
-    <div className="p-4 grow text-gray-800">
+    <div className="sm:p-4 grow text-gray-800">
       <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-950 tracking-tight">
@@ -123,16 +123,16 @@ export default function ReceivedOrders() {
                     key={order._id}
                     className="hover:bg-gray-50/50 transition"
                   >
-                    <td className="p-4 font-bold text-gray-900">
+                    <td className="p-4 font-bold text-gray-900 text-nowrap">
                       {order.productTitle}
                     </td>
-                    <td className="p-4 text-gray-500">
+                    <td className="p-4 text-gray-500 text-nowrap">
                       {order.buyerName || order.buyerEmail}
                     </td>
                     <td className="p-4 font-semibold text-amber-600">
                       ${order.price}
                     </td>
-                    <td className="p-4 text-gray-500">
+                    <td className="p-4 text-gray-500 text-nowrap">
                       {formatDate(order.createdAt)}
                     </td>
                     <td className="p-4">
@@ -153,7 +153,7 @@ export default function ReceivedOrders() {
                           order.status === "delivered" ||
                           updatingId === order._id
                         }
-                        className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-green-50 disabled:hover:text-green-700 cursor-pointer"
+                        className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-green-50 disabled:hover:text-green-700 cursor-pointer text-nowrap"
                       >
                         {order.status === "delivered"
                           ? "Delivered"

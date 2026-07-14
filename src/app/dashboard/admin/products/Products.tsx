@@ -123,7 +123,7 @@ export default function Products() {
                     key={product._id}
                     className="hover:bg-gray-50/50 transition"
                   >
-                    <td className="p-4 font-bold text-gray-900">
+                    <td className="p-4 font-bold text-gray-900 text-nowrap">
                       {product.title}
                     </td>
                     <td className="p-4 text-gray-500">{product.category}</td>
@@ -143,7 +143,7 @@ export default function Products() {
                       </span>
                     </td>
                     <td className="p-4 text-center flex justify-between space-x-2">
-                      <div className="space-x-2">
+                      <div className="space-x-2 flex items-center text-nowrap">
                         <Link
                           href={`/explore/${product._id}`}
                           className="bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white px-3 py-1.5 rounded-lg font-bold transition cursor-pointer"

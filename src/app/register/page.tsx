@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import { Slide, toast } from "react-toastify";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -35,7 +36,17 @@ export default function RegisterPage() {
       setError(error.message ?? "Registration failed.");
       return;
     }
-
+    toast.success("Registration successful!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Slide,
+    });
     router.push("/");
   };
 

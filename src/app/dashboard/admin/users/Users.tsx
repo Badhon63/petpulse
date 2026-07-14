@@ -128,9 +128,11 @@ export default function Users() {
               <tbody className="divide-y divide-gray-50 font-medium">
                 {users.map((user) => (
                   <tr key={user._id} className="hover:bg-gray-50/50 transition">
-                    <td className="p-4 font-bold text-gray-900">{user.name}</td>
+                    <td className="p-4 font-bold text-gray-900 whitespace-nowrap">
+                      {user.name}
+                    </td>
                     <td className="p-4 text-gray-500">{user.email}</td>
-                    <td className="p-4 text-gray-500">
+                    <td className="p-4 text-gray-500 whitespace-nowrap">
                       {formatDate(user.createdAt)}
                     </td>
                     <td className="p-4">
@@ -144,7 +146,7 @@ export default function Users() {
                         {user.banned ? "Banned" : "Active"}
                       </span>
                     </td>
-                    <td className="p-4 text-center space-x-2">
+                    <td className="p-4 flex items-center text-center space-x-2">
                       <button
                         onClick={() => handleToggleBan(user)}
                         disabled={actionId === user._id}
