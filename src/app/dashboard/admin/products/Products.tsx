@@ -153,7 +153,7 @@ export default function Products() {
                         <button
                           onClick={() => handleToggleStatus(product)}
                           disabled={actionId === product._id}
-                          className={`px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-50 cursor-pointer min-w-18 ${
+                          className={`px-3 min-h-6 py-1.5 rounded-lg font-bold transition disabled:opacity-50 cursor-pointer min-w-18 ${
                             product.status === "active"
                               ? "bg-amber-50 text-amber-700 hover:bg-amber-600 hover:text-white"
                               : "bg-green-50 text-green-700 hover:bg-green-700 hover:text-white"

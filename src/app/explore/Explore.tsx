@@ -1,13 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PetItem } from "@/types";
 import PetCard from "@/components/PetCard";
+
+const ITEMS_PER_PAGE = 8;
 
 export default function Explore({ products }: { products: PetItem[] }) {
   const [search, setSearch] = useState<string>("");
   const [categoryFilter, setCategoryFilter] = useState<string>("All");
   const [priceFilter, setPriceFilter] = useState<string>("All");
   const [sortOption, setSortOption] = useState<string>("default");
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const filteredAndSortedPets = products
     .filter((pet) => {
@@ -31,8 +34,18 @@ export default function Explore({ products }: { products: PetItem[] }) {
       if (sortOption === "price-low-high") return a.price - b.price;
       if (sortOption === "price-high-low") return b.price - a.price;
       if (sortOption === "rating") return b.rating - a.rating;
-      return 0; // Default / No sorting
+      return 0;
     });
+
+  const totalPages = Math.ceil(filteredAndSortedPets.length / ITEMS_PER_PAGE);
+  const paginatedPets = filteredAndSortedPets.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, categoryFilter, priceFilter, sortOption]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grow">
@@ -104,12 +117,52 @@ export default function Explore({ products }: { products: PetItem[] }) {
         </div>
       </div>
 
-      {filteredAndSortedPets.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {filteredAndSortedPets.map((pet, i) => (
-            <PetCard key={i} pet={pet} />
-          ))}
-        </div>
+      {paginatedPets.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {paginatedPets.map((pet, i) => (
+              <PetCard key={i} pet={pet} />
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-10">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 rounded-xl text-sm font-bold bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                Previous
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-9 h-9 rounded-xl text-sm font-bold transition cursor-pointer ${
+                      currentPage === page
+                        ? "bg-amber-500 text-white"
+                        : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 rounded-xl text-sm font-bold bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
       ) : (
         <div className="text-center py-16 bg-gray-50 border border-dashed rounded-2xl">
           <p className="text-gray-500 font-medium">

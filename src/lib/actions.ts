@@ -1,15 +1,19 @@
 import { PetItem } from "@/types";
+import { getAuthToken } from "./auth-token";
 
 export const createProduct = async (
   itemData: Omit<PetItem, "_id" | "id" | "createdAt">,
 ) => {
   try {
+    const token = await getAuthToken();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(itemData),
       },
@@ -24,10 +28,15 @@ export const createProduct = async (
 
 export const deleteProduct = async (id: string) => {
   try {
+    const token = await getAuthToken();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${id}`,
       {
         method: "DELETE",
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
       },
     );
     const data = await response.json();
@@ -44,12 +53,15 @@ export const createOrder = async (orderData: {
   buyerName?: string;
 }) => {
   try {
+    const token = await getAuthToken();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(orderData),
       },
@@ -69,12 +81,15 @@ export const createOrder = async (orderData: {
 
 export const updateOrderStatus = async (id: string, status: string) => {
   try {
+    const token = await getAuthToken();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${id}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({ status }),
       },
@@ -94,11 +109,16 @@ export const updateOrderStatus = async (id: string, status: string) => {
 
 export const banUser = async (id: string, banned: boolean) => {
   try {
+    const token = await getAuthToken();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/ban`,
       {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ banned }),
       },
     );
@@ -117,10 +137,15 @@ export const banUser = async (id: string, banned: boolean) => {
 
 export const deleteUser = async (id: string) => {
   try {
+    const token = await getAuthToken();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`,
       {
         method: "DELETE",
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
       },
     );
     const data = await response.json();
@@ -138,11 +163,16 @@ export const deleteUser = async (id: string) => {
 
 export const updateProductStatus = async (id: string, status: string) => {
   try {
+    const token = await getAuthToken();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${id}`,
       {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ status }),
       },
     );
