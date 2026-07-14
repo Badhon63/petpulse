@@ -33,7 +33,7 @@ export default function ProductDetails({ pet }: { pet: PetItem }) {
         theme: "light",
         transition: Slide,
       });
-      router.push("/items/manage");
+      router.push("/dashboard/user/items/manage");
     } catch (error) {
       toast.error("Failed to delete item. Please try again.");
       console.error("Error deleting item:", error);

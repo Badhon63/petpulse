@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { Slide, toast } from "react-toastify";
 
 export default function Navbar() {
   const { data: session } = authClient.useSession();
@@ -13,6 +14,17 @@ export default function Navbar() {
   const handleLogout = async () => {
     await authClient.signOut();
     setIsMenuOpen(false);
+    toast.success("Logged out successfully!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Slide,
+    });
     router.push("/");
     router.refresh();
   };
