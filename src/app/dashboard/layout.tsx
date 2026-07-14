@@ -91,7 +91,7 @@ export default function DashboardLayout({
     session?.user?.role === "admin" ? adminNavItems : userNavItems;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 grow flex flex-col md:flex-row gap-6 text-gray-800">
+    <div className="max-w-7xl mx-auto px-4 py-8 grow flex flex-col md:flex-row gap-6 text-gray-800">
       <aside className="md:w-52 shrink-0 border-r border-black/20 pr-4">
         <div className="md:sticky md:top-24">
           <nav className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible">

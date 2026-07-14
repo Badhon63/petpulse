@@ -102,3 +102,15 @@ export const getUsers = async () => {
 
   return await res.json();
 };
+
+export const getAllOrders = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
+    method: "GET",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch orders");
+  }
+
+  return await res.json();
+};

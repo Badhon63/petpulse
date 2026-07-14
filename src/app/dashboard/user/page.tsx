@@ -87,7 +87,7 @@ export default function UserDashboardPage() {
   ];
 
   return (
-    <div className="text-gray-800">
+    <div className="text-gray-800 px-4">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-950 tracking-tight">
           Welcome back, {session?.user?.name}

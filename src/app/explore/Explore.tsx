@@ -11,6 +11,8 @@ export default function Explore({ products }: { products: PetItem[] }) {
 
   const filteredAndSortedPets = products
     .filter((pet) => {
+      if (pet.status !== "active") return false;
+
       const matchesSearch = pet.title
         .toLowerCase()
         .includes(search.toLowerCase());

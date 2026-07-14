@@ -1,81 +1,70 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
-import { getReceivedOrders } from "@/lib/fetch";
+import { getAllOrders } from "@/lib/fetch";
 import { updateOrderStatus } from "@/lib/actions";
 import { toast, Slide } from "react-toastify";
+import Spinner from "@/components/Spinner";
 
 interface Order {
   _id: string;
-  productId: string;
   productTitle: string;
   price: number;
   buyerEmail: string;
   buyerName: string;
   sellerEmail: string;
   status: string;
+  paid: boolean;
   createdAt: string;
 }
 
-export default function ReceivedOrders() {
-  const { data: session } = authClient.useSession();
+const toastOptions = {
+  position: "bottom-right" as const,
+  autoClose: 3000,
+  hideProgressBar: true,
+  closeOnClick: false,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "light" as const,
+  transition: Slide,
+};
+
+export default function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [actionId, setActionId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!session?.user?.email) return;
-
     const fetchOrders = async () => {
       try {
-        const data = await getReceivedOrders(session.user.email);
+        const data = await getAllOrders();
         setOrders(data);
       } catch (error) {
-        console.error("Failed to load received orders:", error);
+        console.error("Failed to load orders:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchOrders();
-  }, [session?.user?.email]);
+  }, []);
 
-  const handleMarkDelivered = async (id: string) => {
-    setUpdatingId(id);
+  const handleToggleStatus = async (order: Order) => {
+    const newStatus = order.status === "delivered" ? "pending" : "delivered";
+    setActionId(order._id);
     try {
-      await updateOrderStatus(id, "delivered");
+      await updateOrderStatus(order._id, newStatus);
       setOrders((prev) =>
-        prev.map((order) =>
-          order._id === id ? { ...order, status: "delivered" } : order,
+        prev.map((o) =>
+          o._id === order._id ? { ...o, status: newStatus } : o,
         ),
       );
-      toast.success("Order marked as delivered!", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Slide,
-      });
+      toast.success(`Order marked as ${newStatus}`, toastOptions);
     } catch (error) {
-      console.error("Failed to update order status:", error);
-      toast.error("Failed to update order. Please try again.", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Slide,
-      });
+      toast.error("Failed to update order. Please try again.", toastOptions);
     } finally {
-      setUpdatingId(null);
+      setActionId(null);
     }
   };
 
@@ -88,31 +77,33 @@ export default function ReceivedOrders() {
     });
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
-    <div className="p-4 grow text-gray-800">
+    <div className="text-gray-800">
       <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-950 tracking-tight">
-            Received Orders
+            Manage Orders
           </h1>
           <p className="text-gray-400 text-xs mt-1">
-            Orders placed on items you have listed
+            All orders placed across PetPulse
           </p>
         </div>
 
-        {isLoading ? (
-          <div className="text-center py-12 text-gray-400 text-xs">
-            Loading received orders...
-          </div>
-        ) : orders?.length > 0 ? (
+        {orders?.length > 0 ? (
           <div className="overflow-x-auto rounded-2xl border border-gray-100">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100 text-gray-500 font-bold uppercase">
                   <th className="p-4">Product</th>
                   <th className="p-4">Buyer</th>
+                  <th className="p-4">Seller</th>
                   <th className="p-4">Price</th>
-                  <th className="p-4">Order Date</th>
+                  <th className="p-4">Date</th>
+                  <th className="p-4">Payment</th>
                   <th className="p-4">Status</th>
                   <th className="p-4 text-center">Action</th>
                 </tr>
@@ -129,11 +120,23 @@ export default function ReceivedOrders() {
                     <td className="p-4 text-gray-500">
                       {order.buyerName || order.buyerEmail}
                     </td>
+                    <td className="p-4 text-gray-500">{order.sellerEmail}</td>
                     <td className="p-4 font-semibold text-amber-600">
                       ${order.price}
                     </td>
                     <td className="p-4 text-gray-500">
                       {formatDate(order.createdAt)}
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                          order.paid
+                            ? "bg-green-50 text-green-700"
+                            : "bg-red-50 text-red-600"
+                        }`}
+                      >
+                        {order.paid ? "Paid" : "Unpaid"}
+                      </span>
                     </td>
                     <td className="p-4">
                       <span
@@ -148,18 +151,19 @@ export default function ReceivedOrders() {
                     </td>
                     <td className="p-4 text-center">
                       <button
-                        onClick={() => handleMarkDelivered(order._id)}
-                        disabled={
-                          order.status === "delivered" ||
-                          updatingId === order._id
-                        }
-                        className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-green-50 disabled:hover:text-green-700 cursor-pointer"
+                        onClick={() => handleToggleStatus(order)}
+                        disabled={actionId === order._id}
+                        className={`px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-50 cursor-pointer ${
+                          order.status === "delivered"
+                            ? "bg-yellow-50 text-yellow-700 hover:bg-yellow-600 hover:text-white"
+                            : "bg-green-50 text-green-700 hover:bg-green-600 hover:text-white"
+                        }`}
                       >
-                        {order.status === "delivered"
-                          ? "Delivered"
-                          : updatingId === order._id
-                            ? "Updating..."
-                            : "Mark as Delivered"}
+                        {actionId === order._id
+                          ? "..."
+                          : order.status === "delivered"
+                            ? "Set Pending"
+                            : "Set Delivered"}
                       </button>
                     </td>
                   </tr>
@@ -170,7 +174,7 @@ export default function ReceivedOrders() {
         ) : (
           <div className="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
             <p className="text-gray-400 font-medium text-xs">
-              You haven&apos;t received any orders yet.
+              No orders found.
             </p>
           </div>
         )}

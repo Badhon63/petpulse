@@ -52,6 +52,28 @@ export default function ProductDetails({ pet }: { pet: PetItem }) {
     });
   };
 
+  if (pet.status === "pending") {
+    return (
+      <div className="max-w-md mx-auto px-4 py-20 grow flex items-center justify-center">
+        <div className="bg-white border border-gray-100 rounded-3xl p-10 shadow-sm text-center w-full">
+          <div className="text-4xl mb-3">⏳</div>
+          <h1 className="text-xl font-bold text-gray-950 tracking-tight">
+            Listing Not Available
+          </h1>
+          <p className="text-gray-400 text-xs mt-2 mb-6">
+            This item isn&apos;t publicly visible.
+          </p>
+          <Link
+            href="/explore"
+            className="inline-block bg-amber-500 text-white px-5 py-2 rounded-xl hover:bg-amber-600 shadow-sm transition font-bold text-sm"
+          >
+            Back to Explore
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 grow">
       <Link

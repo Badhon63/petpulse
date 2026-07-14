@@ -142,28 +142,30 @@ export default function Products() {
                         {product.status}
                       </span>
                     </td>
-                    <td className="p-4 text-center flex justify-center space-x-2">
-                      <Link
-                        href={`/explore/${product._id}`}
-                        className="bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white px-3 py-1.5 rounded-lg font-bold transition cursor-pointer"
-                      >
-                        View
-                      </Link>
-                      <button
-                        onClick={() => handleToggleStatus(product)}
-                        disabled={actionId === product._id}
-                        className={`px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-50 cursor-pointer min-w-18 ${
-                          product.status === "active"
-                            ? "bg-amber-50 text-amber-700 hover:bg-amber-600 hover:text-white"
-                            : "bg-green-50 text-green-700 hover:bg-green-700 hover:text-white"
-                        }`}
-                      >
-                        {actionId === product._id
-                          ? ""
-                          : product.status === "active"
-                            ? "Set Pending"
-                            : "Approve"}
-                      </button>
+                    <td className="p-4 text-center flex justify-between space-x-2">
+                      <div className="space-x-2">
+                        <Link
+                          href={`/explore/${product._id}`}
+                          className="bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white px-3 py-1.5 rounded-lg font-bold transition cursor-pointer"
+                        >
+                          View
+                        </Link>
+                        <button
+                          onClick={() => handleToggleStatus(product)}
+                          disabled={actionId === product._id}
+                          className={`px-3 py-1.5 rounded-lg font-bold transition disabled:opacity-50 cursor-pointer min-w-18 ${
+                            product.status === "active"
+                              ? "bg-amber-50 text-amber-700 hover:bg-amber-600 hover:text-white"
+                              : "bg-green-50 text-green-700 hover:bg-green-700 hover:text-white"
+                          }`}
+                        >
+                          {actionId === product._id
+                            ? ""
+                            : product.status === "active"
+                              ? "Set Pending"
+                              : "Approve"}
+                        </button>
+                      </div>
                       <button
                         onClick={() => setPendingDelete(product)}
                         className="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white text-xl px-2 py-1 rounded-lg font-bold transition cursor-pointer"

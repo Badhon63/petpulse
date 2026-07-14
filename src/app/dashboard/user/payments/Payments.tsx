@@ -61,7 +61,7 @@ export default function PaymentsPage() {
     .reduce((sum, o) => sum + o.price, 0);
 
   return (
-    <div className="text-gray-800">
+    <div className="text-gray-800 p-4">
       <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
         <div className="mb-6 flex justify-between items-center flex-wrap gap-3">
           <div>
